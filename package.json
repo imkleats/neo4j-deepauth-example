@@ -1,0 +1,25 @@
+{
+  "name": "neo4j-deepauth-example",
+  "version": "1.0.0",
+  "description": "Example of deepauth directive for neo4j-graphql-js",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "set NODE_ENV=production && nodemon ./src/index.js",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.17.0",
+    "graphql": "^14.7.0",
+    "neo4j-deepauth": "^0.1.0-alpha",
+    "neo4j-driver": "^4.1.1",
+    "neo4j-graphql-js": "^2.16.1"
+  },
+  "resolutions": {
+    "graphql": "^14.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
