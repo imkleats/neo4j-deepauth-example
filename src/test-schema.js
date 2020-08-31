@@ -3,7 +3,7 @@ const { applyDeepAuth } = require('neo4j-deepauth');
 
 const typeDefs = `
 type User @deepAuth(
-  path: """name: "$user_id" """,
+  path: """{name_contains: "$user_id"}""",
   variables: ["$user_id"]
 ) {
     uuid: ID!
@@ -20,7 +20,7 @@ type User @deepAuth(
   }
   
   type Cat  @deepAuth(
-    path: """owner: {name_contains: "$user_id"}""",
+    path: """{owner: {name_contains: "$user_id"}}""",
     variables: ["$user_id"]
   ) {
     id: ID!
@@ -46,20 +46,22 @@ const resolvers = {
     },
     Cat(object, params, ctx, resolveInfo) {
       // Uses deepauth
-      console.log("Pre-request");
-      console.log(JSON.stringify(resolveInfo.operation.selectionSet.selections[0].arguments[0]));
       try {
         const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
-        console.log("New cat request")
-        console.log("authResolve");
-        console.log(JSON.stringify(authResolveInfo.operation.selectionSet.selections[0].arguments[0]));
-        console.log("resolveInfo");
-        console.log(JSON.stringify(resolveInfo.operation.selectionSet.selections[0].arguments[0]));
         return neo4jgraphql(object, params, ctx, authResolveInfo);
       } catch (e) {
         console.warn(e);
         return neo4jgraphql(object, params, ctx, resolveInfo);
-
+      }
+    },
+    User(object, params, ctx, resolveInfo) {
+      // Uses deepauth
+      try {
+        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
+        return neo4jgraphql(object, params, ctx, authResolveInfo);
+      } catch (e) {
+        console.warn(e);
+        return neo4jgraphql(object, params, ctx, resolveInfo);
       }
     },
   },

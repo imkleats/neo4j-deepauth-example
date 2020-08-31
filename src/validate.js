@@ -1,4 +1,4 @@
-const { coerceInputValue, GraphQLSchema, isInputType, parseValue, valueFromASTUntyped } = require("graphql");
+const { coerceInputValue, isInputType, parseValue, valueFromASTUntyped } = require("graphql");
 
 function validateDeepAuth(schema) {
     const typeMap = schema.getTypeMap();
@@ -9,7 +9,7 @@ function validateDeepAuth(schema) {
             typeMap[namedType].astNode.directives.filter( directive => directive.name.value === 'deepAuth').map(
                 directive => {
                     const pathNode = directive.arguments.filter( arg => arg.name.value === 'path')[0].value;
-                    const path = pathNode.kind === 'StringValue' ? `{ ${pathNode.value} }` : '';
+                    const path = pathNode.kind === 'StringValue' ? `${pathNode.value}` : '';
                     const inputType = schema.getType(filterInputTypeName);
                     if (isInputType(inputType)){
                         coerceInputValue(valueFromASTUntyped(parseValue(path)),  inputType);

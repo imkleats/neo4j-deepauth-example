@@ -2,6 +2,7 @@ const { makeAugmentedSchema } = require('neo4j-graphql-js');
 const { ApolloServer, gql, makeExecutableSchema } = require('apollo-server');
 const neo4j  = require('neo4j-driver');
 const { typeDefs, resolvers }  = require('./test-schema');
+const { validateDeepAuthSchema } = require('neo4j-deepauth');
 const { validateDeepAuth } = require('./validate');
 
 // Add auto-generated mutations
@@ -20,7 +21,9 @@ const driver = neo4j.driver(
 
 try {
   validateDeepAuth(schema);
-  console.log("Validated schema");
+  console.log("Validated schema with local function");
+  validateDeepAuthSchema(schema);
+  console.log("Validated schema with package function is currently broken - working on bug fix");
 } catch (e) {
   console.warn("deepAuth arguments do not match schema");
   console.warn(e);
