@@ -23,7 +23,7 @@ try {
   validateDeepAuth(schema);
   console.log("Validated schema with local function");
   validateDeepAuthSchema(schema);
-  console.log("Validated schema with package function is currently broken - working on bug fix");
+  console.log("Validated schema with package function");
 } catch (e) {
   console.warn("deepAuth arguments do not match schema");
   console.warn(e);
