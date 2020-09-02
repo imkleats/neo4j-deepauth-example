@@ -1,15 +1,22 @@
 const { makeAugmentedSchema } = require('neo4j-graphql-js');
 const { ApolloServer, gql, makeExecutableSchema } = require('apollo-server');
 const neo4j  = require('neo4j-driver');
-const { typeDefs, resolvers }  = require('./test-schema');
+const { typeDefs, resolvers, hiddenTypes, hiddenResolvers }  = require('./test-delegated-schema');
 const { validateDeepAuthSchema } = require('neo4j-deepauth');
 const { validateDeepAuth } = require('./validate');
 
 // Add auto-generated mutations
+
+const authSchema = makeAugmentedSchema({
+  typeDefs: hiddenTypes,
+  resolvers: hiddenResolvers
+});
+
 const schema = makeAugmentedSchema({
     typeDefs,
-    resolvers,
+    resolvers: resolvers(authSchema),
   });
+
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI || 'bolt://localhost:7687',
@@ -37,7 +44,7 @@ const server = new ApolloServer({
         headers: req.headers,
         // Pass schema so in some resolvers, we have the ability
         // to call other queries/mutations internally
-        schema: schema,
+        schema: authSchema,
         deepAuthParams: {
           $user_id: '123', // Dummy user ID
         },

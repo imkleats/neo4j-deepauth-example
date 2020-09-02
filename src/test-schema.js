@@ -19,20 +19,20 @@ type User @deepAuth(
     owner: User @relation(name: "HAS_OWNER", direction: "IN")
   }
   
-  type Cat  @deepAuth(
+  type Cat @deepAuth(
     path: """{owner: {name_contains: "$user_id"}}""",
     variables: ["$user_id"]
-  ) {
+  ){
     id: ID!
     name: String!
     breed: String!
     owner: User @relation(name: "HAS_OWNER", direction: "IN")
   }
   
-  directive @deepAuth(
-      path: String
-      variables: [String]
-  ) on OBJECT | FIELD_DEFINITION
+directive @deepAuth(
+  path: String
+  variables: [String]
+) on OBJECT | INTERFACE | FIELD_DEFINITION
 `;
 
 const resolvers = {
@@ -47,7 +47,7 @@ const resolvers = {
     Cat(object, params, ctx, resolveInfo) {
       // Uses deepauth
       try {
-        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
+        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo)
         return neo4jgraphql(object, params, ctx, authResolveInfo);
       } catch (e) {
         console.warn(e);
@@ -57,7 +57,7 @@ const resolvers = {
     User(object, params, ctx, resolveInfo) {
       // Uses deepauth
       try {
-        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
+        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo)
         return neo4jgraphql(object, params, ctx, authResolveInfo);
       } catch (e) {
         console.warn(e);
