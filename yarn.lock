@@ -1579,10 +1579,10 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
 
-neo4j-deepauth@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/neo4j-deepauth/-/neo4j-deepauth-0.1.3.tgz#350979895e51e11228a88cac140b32aa94dde7a6"
-  integrity sha512-7jpM3vl0Slml7nlqBuMd0Wm17GEMwTHeVctNUKRh1roXPRQuuGssbxJK7uwypKmNyYoJ0rXOXe7rb/rohGnUWg==
+neo4j-deepauth@^0.2.0-beta.0:
+  version "0.2.0-beta.0"
+  resolved "https://registry.yarnpkg.com/neo4j-deepauth/-/neo4j-deepauth-0.2.0-beta.0.tgz#40f4b28bb58757de21f138f068311f4b3a887755"
+  integrity sha512-x8/rW+BzRVbFnsMqbdhtT3FWzr4KcPuNCQqVfbNxcYbXPAMC6PKaOul+u9Qpgo01Btn6RIfz7/G+/eyT1PkD0g==
   dependencies:
     "@types/lodash" "^4.14.161"
     graphql "^15.3.0"

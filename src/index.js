@@ -8,8 +8,7 @@ const { validateDeepAuth } = require('./validate');
 // Add auto-generated mutations
 
 const authSchema = makeAugmentedSchema({
-  typeDefs: hiddenTypes,
-  resolvers: hiddenResolvers
+  typeDefs: hiddenTypes
 });
 
 const schema = makeAugmentedSchema({
