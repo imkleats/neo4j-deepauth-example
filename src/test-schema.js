@@ -1,6 +1,5 @@
 const { neo4jgraphql, makeAugmentedSchema } = require( 'neo4j-graphql-js');
 const { applyDeepAuth, applyDeepAuthToParams } = require('neo4j-deepauth');
-const { valueFromASTUntyped } = require('graphql');
 
 const typeDefs = `
 type User @deepAuth(
@@ -41,20 +40,19 @@ const resolvers = {
   Query: {
     Dog(object, params, ctx, resolveInfo) {
       // No deepauth
-      return neo4jgraphql(object, params, ctx, resolveInfo);
+        const {authParams, authResolveInfo} = applyDeepAuth(params, ctx, resolveInfo);
+        return neo4jgraphql(object, authParams, ctx, authResolveInfo);
       // const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
       // return neo4jgraphql(object, params, ctx, authResolveInfo);
     },
     async Cat(object, params, ctx, resolveInfo) {
       // Uses deepauth
-        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
-        const authParams = {...params, filter: applyDeepAuthToParams(authResolveInfo)};
+        const {authParams, authResolveInfo} = applyDeepAuth(params, ctx, resolveInfo);
         return neo4jgraphql(object, authParams, ctx, authResolveInfo);
     },
     User(object, params, ctx, resolveInfo) {
       // Uses deepauth
-        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
-        const authParams = {...params, filter: applyDeepAuthToParams(authResolveInfo)};
+        const {authParams, authResolveInfo} = applyDeepAuth(params, ctx, resolveInfo);
         return neo4jgraphql(object, authParams, ctx, authResolveInfo);
     },
   },

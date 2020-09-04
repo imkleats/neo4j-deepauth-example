@@ -59,12 +59,12 @@ const resolvers = (hiddenSchema) => ({
   Query: {
     Dog(object, params, ctx, resolveInfo) {
       // No deepauth
-      const authResolveInfo = applyDeepAuth(params, ctx, {...resolveInfo, schema: hiddenSchema})
+      const {authParams, authResolveInfo} = applyDeepAuth(params, ctx, {...resolveInfo, schema: hiddenSchema})
       return delegateToSchema({
         schema: hiddenSchema,
         operation: 'query',
         fieldName: "Dog",
-        args: params,
+        args: authParams,
         context: {...ctx, authResolveInfo},
         info: authResolveInfo
       });
@@ -73,25 +73,24 @@ const resolvers = (hiddenSchema) => ({
     },
     Cat(object, params, ctx, resolveInfo) {
       // Uses deepauth
-      const authResolveInfo = applyDeepAuth(params, ctx, {...resolveInfo, schema: hiddenSchema});
-      // console.log(JSON.stringify(translate(params, ctx, { ...resolveInfo, schema: hiddenSchema })));
+      const {authParams, authResolveInfo} = applyDeepAuth(params, ctx, {...resolveInfo, schema: hiddenSchema})
       return delegateToSchema({
         schema: hiddenSchema,
         operation: 'query',
-        fieldName: "Cat",
-        args: params,
+        fieldName: "Dog",
+        args: authParams,
         context: {...ctx, authResolveInfo},
         info: authResolveInfo
       });
     },
     User(object, params, ctx, resolveInfo) {
       // Uses deepauth
-      const authResolveInfo = applyDeepAuth(params, ctx, {...resolveInfo, schema: hiddenSchema})
+      const {authParams, authResolveInfo} = applyDeepAuth(params, ctx, {...resolveInfo, schema: hiddenSchema})
       return delegateToSchema({
         schema: hiddenSchema,
         operation: 'query',
-        fieldName: "User",
-        args: params,
+        fieldName: "Dog",
+        args: authParams,
         context: {...ctx, authResolveInfo},
         info: authResolveInfo
       });
