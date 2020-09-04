@@ -1,5 +1,6 @@
-const { neo4jgraphql } = require( 'neo4j-graphql-js');
-const { applyDeepAuth } = require('neo4j-deepauth');
+const { neo4jgraphql, makeAugmentedSchema } = require( 'neo4j-graphql-js');
+const { applyDeepAuth, applyDeepAuthToParams } = require('neo4j-deepauth');
+const { valueFromASTUntyped } = require('graphql');
 
 const typeDefs = `
 type User @deepAuth(
@@ -44,27 +45,21 @@ const resolvers = {
       // const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
       // return neo4jgraphql(object, params, ctx, authResolveInfo);
     },
-    Cat(object, params, ctx, resolveInfo) {
+    async Cat(object, params, ctx, resolveInfo) {
       // Uses deepauth
-      try {
-        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo)
-        return neo4jgraphql(object, params, ctx, authResolveInfo);
-      } catch (e) {
-        console.warn(e);
-        return neo4jgraphql(object, params, ctx, resolveInfo);
-      }
+        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
+        const authParams = {...params, filter: applyDeepAuthToParams(authResolveInfo)};
+        return neo4jgraphql(object, authParams, ctx, authResolveInfo);
     },
     User(object, params, ctx, resolveInfo) {
       // Uses deepauth
-      try {
-        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo)
-        return neo4jgraphql(object, params, ctx, authResolveInfo);
-      } catch (e) {
-        console.warn(e);
-        return neo4jgraphql(object, params, ctx, resolveInfo);
-      }
+        const authResolveInfo = applyDeepAuth(params, ctx, resolveInfo);
+        const authParams = {...params, filter: applyDeepAuthToParams(authResolveInfo)};
+        return neo4jgraphql(object, authParams, ctx, authResolveInfo);
     },
   },
 };
 
-module.exports = { typeDefs, resolvers };
+const plainSchema = makeAugmentedSchema({typeDefs, resolvers});
+
+module.exports = { typeDefs, resolvers, plainSchema };
