@@ -1,4 +1,4 @@
-const { neo4jgraphql } = require( 'neo4j-graphql-js');
+const { neo4jgraphql, makeAugmentedSchema } = require( 'neo4j-graphql-js');
 const { applyDeepAuth } = require('neo4j-deepauth');
 const { delegateToSchema } = require('apollo-server');
 
@@ -135,4 +135,14 @@ const hiddenResolvers = {
   },
 };
 
-module.exports = { typeDefs, resolvers, hiddenTypes, hiddenResolvers };
+const authSchema = makeAugmentedSchema({
+  typeDefs: hiddenTypes,
+  resolvers: hiddenResolvers
+});
+
+const exampleProxiedSchema = makeAugmentedSchema({
+    typeDefs,
+    resolvers: resolvers(authSchema)
+});
+
+module.exports = { exampleProxiedSchema, typeDefs, resolvers, hiddenTypes, hiddenResolvers };

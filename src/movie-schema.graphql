@@ -1,0 +1,109 @@
+type Genre {
+   _id: Long!
+   name: String!
+   movies: [Movie] @relation(name: "IN_GENRE", direction: IN)
+}
+
+type User {
+   _id: Long!
+   name: String!
+   userId: String!
+   rated: [Movie] @relation(name: "RATED", direction: OUT)
+   RATED_rel: [RATED]
+}
+
+type Director {
+   _id: Long!
+   bio: String
+   born: Date
+   bornIn: String
+   died: Date
+   imdbId: String
+   name: String!
+   poster: String
+   tmdbId: String!
+   url: String!
+   acted_in: [Movie] @relation(name: "ACTED_IN", direction: OUT)
+   directed: [Movie] @relation(name: "DIRECTED", direction: OUT)
+}
+
+type Actor {
+   _id: Long!
+   bio: String
+   born: Date
+   bornIn: String
+   died: Date
+   imdbId: String
+   name: String!
+   poster: String
+   tmdbId: String!
+   url: String!
+   acted_in: [Movie] @relation(name: "ACTED_IN", direction: OUT)
+   directed: [Movie] @relation(name: "DIRECTED", direction: OUT)
+}
+
+type Movie {
+   _id: Long!
+   budget: Int
+   countries: [String]
+   imdbId: String!
+   imdbRating: Float
+   imdbVotes: Int
+   languages: [String]
+   movieId: String!
+   plot: String
+   poster: String
+   released: String
+   revenue: Int
+   runtime: Int
+   title: String!
+   tmdbId: String
+   url: String
+   year: Int   
+   in_genre: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+   users: [User] @relation(name: "RATED", direction: "IN")
+   actors: [Actor] @relation(name: "ACTED_IN", direction: "IN")
+   directors: [Director] @relation(name: "DIRECTED", direction: "IN")
+}
+
+type RATED @relation(name: "RATED") {
+  from: User!
+  to: Movie!
+  rating: Float!
+  timestamp: Int!
+}
+
+extend type User @deepAuth(
+   path: """{ RATED_rel: { AND: [
+      { rating_gte: 3.0 }},
+      { to: { actors_some: { name: "Sam Neill"} }}
+   ]}}"""
+)
+
+extend type Director @deepAuth(
+   path: """{ OR: [
+      { acted_in: { actors_some: { name: "Sam Neill"} }},
+      { directed: { actors_some: { name: "Sam Neill"} }}
+   ]}"""
+)
+
+extend type Actor @deepAuth(
+   path: """{ OR: [
+      { acted_in: { actors_some: { name: "Sam Neill"} }},
+      { directed: { actors_some: { name: "Sam Neill"} }}
+   ]}"""
+)
+
+extend type Movie @deepAuth(
+   path: """{ actors_some: { name: "Sam Neill"} }""",
+)
+
+extend type RATED @deepAuth(
+   path: """{ to: { actors_some: { name: "Sam Neill" } } }"""
+)
+
+directive @deepAuth(
+   path: String
+   variables: [String]
+) on OBJECT | INTERFACE
+

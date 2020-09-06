@@ -871,6 +871,11 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
+dotenv@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+
 duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
@@ -1589,10 +1594,10 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
 
-neo4j-deepauth@^0.2.0-beta.1:
-  version "0.2.0-beta.4"
-  resolved "https://registry.yarnpkg.com/neo4j-deepauth/-/neo4j-deepauth-0.2.0-beta.4.tgz#8b71924c6d6ebf6b4de9132a000c8e02accff770"
-  integrity sha512-KnOg8H7ClnEYUAMDoh1pl2wIknYbFN1DILyZpQdRWtGmdrNxDsayR1SElS0KOng3jF18jhjT3AGTB3sG34ewCQ==
+neo4j-deepauth@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/neo4j-deepauth/-/neo4j-deepauth-0.2.0.tgz#592ffab8612f1d3b235b42dd321397aca64b6619"
+  integrity sha512-i2E2p+eBUoaLb3Z1dXq1DkI3ojYhu/kk4O8IFX/YWzWj34GjI+O7CnCpotcJMwt9uVm7sId09DrC/CQjHnMDzg==
   dependencies:
     "@types/lodash" "^4.14.161"
     graphql "^15.3.0"
