@@ -1,6 +1,13 @@
 # neo4j-deepauth-example
 Example of using `neo4j-deepauth` for fine-grained access control with `neo4j-graphql-js`.
 
+## Urgent Information
+
+- Experiencing issues that appear directly related to ApolloServer
+- After N consecutive queries, ApolloServer will hang without an error message.
+- This behavior does not occur with Express-GraphQL.
+- Until it can be diagnosed & addressed, recommend express-graphql or to try your luck with a non-Apollo server.
+
 ### Updated for Version: v0.2.0 full release
 `npm install neo4j-deepauth`
 

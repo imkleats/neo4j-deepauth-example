@@ -1,4 +1,6 @@
 const { ApolloServer } = require('apollo-server');
+const express = require('express');
+const { graphqlHTTP } = require('express-graphql');
 const neo4j  = require('neo4j-driver');
 // const { exampleProxiedSchema }  = require('./test-delegated-schema'); // Schema obfuscating Authorization Paths
 // const { plainSchema } = require('./test-schema');  // Just a simple schema
@@ -12,29 +14,26 @@ const driver = neo4j.driver(
   )
 );
 
-const server = new ApolloServer({
+// Experiencing issues related to ApolloServer
+// After N consecutive queries, ApolloServer will hang without an error message.
+// This behavior does not occur with Express-GraphQL.
+// Until it can be diagnosed, recommend express-graphql or to try your luck with
+// a non-Apollo server.
+
+const app = express();
+
+app.use('/', graphqlHTTP((request) => ({
   schema: movieSchema,
-  context: ({req}) => ({
+  context: {
       driver,
-      headers: req.headers,
+      headers: request.headers,
       deepAuthParams: {
         $user_id: 'Sam Neill', // Dummy user ID (or Actor Name for Movie example)
       },
-  }),
-  // By default, the GraphQL Playground interface and GraphQL introspection
-  // is disabled in "production" (i.e. when `process.env.NODE_ENV` is `production`).
-  //
-  // If you'd like to have GraphQL Playground and introspection enabled in production,
-  // the `playground` and `introspection` options must be set explicitly to `true`.
-  introspection: true,
-  graphiql: true,
-  playground: {
-    // FIXME: Hide in prod?
-    endpoint: '/dev/graphql',
   },
-});
+  graphiql: true
+})));
 
-server
-  .listen(process.env.GRAPHQL_LISTEN_PORT || 3000, '0.0.0.0').then(({ url }) => {
-    console.log(`GraphQL API ready at ${url}`);
-  });
+app.listen(process.env.GRAPHQL_LISTEN_PORT || 3000, '0.0.0.0', () => {
+    console.log(`GraphQL API ready for business`);
+});
